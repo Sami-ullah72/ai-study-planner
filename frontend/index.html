@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Study Planner</title>
+</head>
+<body>
+
+<h2>AI Study Planner</h2>
+
+<form id="plannerForm">
+    <label>Subjects (comma separated):</label><br>
+    <input type="text" id="subjects"><br><br>
+
+    <label>Hours per day:</label><br>
+    <input type="number" id="hours"><br><br>
+
+    <label>Days:</label><br>
+    <input type="number" id="days"><br><br>
+
+    <button type="submit">Generate Plan</button>
+</form>
+
+<h3>Study Plan:</h3>
+<pre id="output"></pre>
+
+<script>
+document.getElementById("plannerForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const subjects = document.getElementById("subjects").value.split(",");
+    const hours = document.getElementById("hours").value;
+    const days = document.getElementById("days").value;
+
+    const response = await fetch("http://127.0.0.1:5000/generate-plan", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            subjects: subjects,
+            hours_per_day: hours,
+            days: days
+        })
+    });
+
+    const data = await response.json();
+    document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+});
+</script>
+
+</body>
+</html>

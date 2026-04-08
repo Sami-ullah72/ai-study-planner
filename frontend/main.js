@@ -1,0 +1,1 @@
+const subjects = document.getElementById("subjects").value.split(",");
