@@ -14,7 +14,7 @@ def generate_plan():
     hours_per_day = data.get('hours_per_day')
     days = data.get('days')
 
-    # Basic logic (we will improve later)
+    
     plan = {}
 
     for subject in subjects:
