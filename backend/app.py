@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+from scheduler import generate_study_plan
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def home():
@@ -9,18 +12,20 @@ def home():
 @app.route('/generate-plan', methods=['POST'])
 def generate_plan():
     data = request.json
-    
-    subjects = data.get('subjects')
-    hours_per_day = data.get('hours_per_day')
-    days = data.get('days')
 
-    
-    plan = {}
+    raw_subjects = data.get('subjects')
+    hours_per_day = int(data.get('hours_per_day'))
+    days = int(data.get('days'))
 
-    for subject in subjects:
-        plan[subject] = round(hours_per_day / len(subjects), 2)
+    subjects = {}
 
-    return jsonify(plan)
+    for item in raw_subjects:
+        name, difficulty = item.split(":")
+        subjects[name.strip()] = int(difficulty)
+
+    timetable = generate_study_plan(subjects, hours_per_day, days)
+
+    return jsonify(timetable)
 
 if __name__ == '__main__':
     app.run(debug=True)
