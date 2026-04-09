@@ -118,7 +118,7 @@ python app.py
 
 ## 💡 Project Status
 
-✅ Completed till: Smart scheduling (Day 2)
+✅ Completed till: Smart scheduling 
 🚧 Next: Advanced timetable + UI improvements
 
 ---
