@@ -2,27 +2,60 @@
 <html>
 <head>
     <title>AI Study Planner</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f6f8;
+            text-align: center;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            margin-top: 50px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            width: 80%;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .day {
+            background: #e9f2ff;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
+
 <body>
 
-<h2>AI Study Planner</h2>
+<div class="container">
+    <h2>🧠 AI Study Planner</h2>
 
-<form id="plannerForm">
-    <label>Enter Subjects with Difficulty:</label><br>
-    <small>Format: Math:3,Physics:2,DSA:5</small><br>
-    <input type="text" id="subjects"><br><br>
+    <form id="plannerForm">
+        <input type="text" id="subjects" placeholder="Math:3,Physics:2,DSA:5" required>
+        <input type="number" id="hours" placeholder="Hours per day" required>
+        <input type="number" id="days" placeholder="Number of days" required>
+        <button type="submit">Generate Plan</button>
+    </form>
 
-    <label>Hours per day:</label><br>
-    <input type="number" id="hours"><br><br>
-
-    <label>Days:</label><br>
-    <input type="number" id="days"><br><br>
-
-    <button type="submit">Generate Plan</button>
-</form>
-
-<h3>Study Plan:</h3>
-<pre id="output"></pre>
+    <div id="output"></div>
+</div>
 
 <script>
 document.getElementById("plannerForm").addEventListener("submit", async function(e) {
@@ -45,7 +78,23 @@ document.getElementById("plannerForm").addEventListener("submit", async function
     });
 
     const data = await response.json();
-    document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+
+    const outputDiv = document.getElementById("output");
+    outputDiv.innerHTML = "";
+
+    for (let day in data) {
+        let dayDiv = document.createElement("div");
+        dayDiv.className = "day";
+
+        let content = `<h3>${day}</h3>`;
+
+        for (let subject in data[day]) {
+            content += `<p>${subject}: ${data[day][subject]} hrs</p>`;
+        }
+
+        dayDiv.innerHTML = content;
+        outputDiv.appendChild(dayDiv);
+    }
 });
 </script>
 
